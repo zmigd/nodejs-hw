@@ -1,7 +1,10 @@
 import { Note } from '../models/note.js';
 import createHttpError from 'http-errors';
 
+export const main = async (req,res,next) =>{
+  console.log("02-mongodb");
 
+};
 export const getAllNotes = async (req, res, next) => {
   try {
     const notes = await Note.find();
@@ -10,9 +13,6 @@ export const getAllNotes = async (req, res, next) => {
     next(error);
   }
 };
-
-
-
 
 export const getNoteById = async (req, res, next) => {
   const { noteId } = req.params;
@@ -62,7 +62,7 @@ export const updateNote = async (req, res, next) => {
       return next(createHttpError(404, 'Note not found'));
     }
 
- 
+
     res.status(200).json(note);
   } catch (error) {
     next(error);
