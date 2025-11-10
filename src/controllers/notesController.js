@@ -2,7 +2,7 @@ import { Note } from '../models/note.js';
 import createHttpError from 'http-errors';
 
 export const main = async (req,res,next) =>{
-  console.log("02-mongodb");
+  res.status(200).json({message: '02-mongodb'});
 
 };
 export const getAllNotes = async (req, res, next) => {
