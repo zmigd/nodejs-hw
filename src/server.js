@@ -13,7 +13,6 @@ import notesRoutes from "./routes/notesRoutes.js";
 const app = express();
 const PORT = process.env.PORT ?? 3000;
 
-
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
@@ -21,14 +20,19 @@ app.use(logger);
 
 await connectMongoDB();
 
+
+app.get('/', (req, res) => {
+  res.status(200).json({ message: '03-validation' });
+});
+
 app.use('/notes', notesRoutes);
 
 app.use(celebrateErrors());
 
-// Error handlers
 app.use(notFoundHandler);
 app.use(errorHandler);
 
+// Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
