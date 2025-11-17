@@ -1,31 +1,34 @@
-// src/routes/notesRoutes.js
-import { Router } from 'express';
-import {
-  getAllNotes,
-  getNoteById,
-  createNote,
-  deleteNote,
-  updateNote,
-} from '../controllers/notesController.js';
-import {
-  getAllNotesSchema,
-  noteIdSchema,
-  createNoteSchema,
-  updateNoteSchema,
-} from '../validations/notesValidation.js';
 
-const router = Router();
+import express from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import 'dotenv/config';
+import { errors as celebrateErrors } from 'celebrate';
+import { connectMongoDB } from './db/connectMongoDB.js';
+import { errorHandler } from './middleware/errorHandler.js';
+import { notFoundHandler } from './middleware/notFoundHandler.js';
+import { logger } from './middleware/logger.js';
+import notesRoutes from './routes/notesRoutes.js';
+
+const app = express();
+const PORT = process.env.PORT ?? 3000;
 
 
-router.get('/', (req, res) => {
-  res.status(200).json({ message: '03-validation' });
+app.use(helmet());
+app.use(cors());
+app.use(express.json());
+app.use(logger);
+
+await connectMongoDB();
+
+
+app.use(notesRoutes);
+
+app.use(celebrateErrors());
+
+app.use(notFoundHandler);
+app.use(errorHandler);
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
-
-
-router.get('/notes', getAllNotesSchema, getAllNotes);
-router.get('/notes/:noteId', noteIdSchema, getNoteById);
-router.post('/notes', createNoteSchema, createNote);
-router.patch('/notes/:noteId', updateNoteSchema, updateNote);
-router.delete('/notes/:noteId', noteIdSchema, deleteNote);
-
-export default router;
