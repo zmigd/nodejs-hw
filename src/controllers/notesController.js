@@ -2,16 +2,9 @@
 import Note from '../models/note.js';
 import createHttpError from 'http-errors';
 
-export const main = async (req, res, next) => {
-  res.status(200).json({ message: '03-validation' });
-};
-
-
 export const getAllNotes = async (req, res, next) => {
   try {
-
     const { page = 1, perPage = 10, tag, search } = req.query;
-
 
     const filter = {};
 
@@ -26,7 +19,6 @@ export const getAllNotes = async (req, res, next) => {
     const skip = (page - 1) * perPage;
     const limit = parseInt(perPage);
 
-
     const [notes, totalNotes] = await Promise.all([
       Note.find(filter)
         .skip(skip)
@@ -34,7 +26,6 @@ export const getAllNotes = async (req, res, next) => {
         .sort({ createdAt: -1 }),
       Note.countDocuments(filter),
     ]);
-
 
     const totalPages = Math.ceil(totalNotes / perPage);
 
@@ -49,7 +40,6 @@ export const getAllNotes = async (req, res, next) => {
     next(error);
   }
 };
-
 
 export const getNoteById = async (req, res, next) => {
   const { noteId } = req.params;
@@ -85,7 +75,8 @@ export const deleteNote = async (req, res, next) => {
       return next(createHttpError(404, 'Note not found'));
     }
 
-    res.status(204).send();
+
+    res.status(200).json({ note });
   } catch (error) {
     next(error);
   }
