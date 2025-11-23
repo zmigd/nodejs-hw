@@ -1,4 +1,3 @@
-// src/models/note.js
 import mongoose from "mongoose";
 import { TAGS } from "../constants/tags.js";
 
@@ -20,13 +19,16 @@ const noteSchema = new mongoose.Schema(
       default: "Todo",
       trim: true,
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
-
 noteSchema.index({ title: "text", content: "text" });
-
 
 const Note = mongoose.model("Note", noteSchema);
 

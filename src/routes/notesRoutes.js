@@ -1,4 +1,3 @@
-
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
 import {
@@ -17,14 +16,11 @@ import {
 
 const router = Router();
 
-router.get('/', (req, res) => {
-  res.status(200).json({ message: '03-validation' });
-});
 
-router.get('/notes', celebrate(getAllNotesSchema), getAllNotes);
-router.get('/notes/:noteId', celebrate(noteIdSchema), getNoteById);
-router.post('/notes', celebrate(createNoteSchema), createNote);
-router.patch('/notes/:noteId', celebrate(updateNoteSchema), updateNote);
-router.delete('/notes/:noteId', celebrate(noteIdSchema), deleteNote);
+router.get('/', celebrate(getAllNotesSchema), getAllNotes);
+router.get('/:noteId', celebrate(noteIdSchema), getNoteById);
+router.post('/', celebrate(createNoteSchema), createNote);
+router.patch('/:noteId', celebrate(updateNoteSchema), updateNote);
+router.delete('/:noteId', celebrate(noteIdSchema), deleteNote);
 
 export default router;
