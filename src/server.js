@@ -11,11 +11,12 @@ import notesRoutes from './routes/notesRoutes.js';
 import cookieParser from "cookie-parser";
 import authRoutes from './routes/authRoutes.js';
 import { authenticate } from "./middleware/authenticate.js";
+import userRoutes from './routes/userRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
 
-// Базові middleware
+
 app.use(helmet());
 app.use(cors());
 app.use(cookieParser());
@@ -26,6 +27,7 @@ await connectMongoDB();
 
 
 app.use(authRoutes);
+app.use(userRoutes);
 app.use('/notes', authenticate, notesRoutes);
 
 app.use(celebrateErrors());
