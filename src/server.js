@@ -10,12 +10,10 @@ import { logger } from './middleware/logger.js';
 import notesRoutes from './routes/notesRoutes.js';
 import cookieParser from "cookie-parser";
 import authRoutes from './routes/authRoutes.js';
-import { authenticate } from "./middleware/authenticate.js";
 import userRoutes from './routes/userRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
-
 
 app.use(helmet());
 app.use(cors());
@@ -25,13 +23,12 @@ app.use(logger);
 
 await connectMongoDB();
 
-
 app.use(authRoutes);
 app.use(userRoutes);
-app.use('/notes', authenticate, notesRoutes);
+app.use(notesRoutes);
 
-app.use(celebrateErrors());
 app.use(notFoundHandler);
+app.use(celebrateErrors());
 app.use(errorHandler);
 
 app.listen(PORT, () => {
